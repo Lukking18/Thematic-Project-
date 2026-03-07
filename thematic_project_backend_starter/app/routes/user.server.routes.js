@@ -2,13 +2,13 @@ const users = require("../controllers/user.server.controllers")
 
 module.exports = function(app){
     app.route("/users")
-        .post();
+        .post(users.create_account);
 
     app.route("/login")
-        .post();
+        .post(users.login);
 
     app.route("/logout")
-        .post();
+        .post(users.logout);
 }
 
 

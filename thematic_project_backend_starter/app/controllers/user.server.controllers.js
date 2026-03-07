@@ -1,10 +1,14 @@
+const userModel = require("../models/user.server.models");
+const Joi = require("joi");
+
+
 const create_account = (req, res) => {
-    //return res.sendStatus(500);
+    
     const schema = Joi.object({
         first_name: Joi.string().required(),
         last_name: Joi.string().required(),
         email: Joi.string().required().email(),
-        password: Joi.string().min(8).max(34).pattern(new RegExp (/[A-Z]/)).pattern(new RegExp (/[a-z]/)).pattern(new RegExp (/[0-9]/)).pattern(new RegExp (/[^A-Za-z0-9]/)).required()
+        password: Joi.string().min(8).max(34).pattern(new RegExp (/[A-Z]/)).pattern(new RegExp (/[a-z]/)).pattern(new RegExp (/[0-9]/)).pattern(new RegExp (/[^A-Za-z0-9]/)).required() 
     });
 
     console.log(schema.validate(req.body));
@@ -14,12 +18,12 @@ const create_account = (req, res) => {
 
     const { email } = req.body;
 
-    users.testDuplicateEmail(email, (err, exists) => {
+    userModel.testDuplicateEmail(email, (err, exists) => {
         if(err) return res.sendStatus(500)
         if (exists) return res.status(400).json({ error_message: "Email already used" })
         let user = Object.assign({}, req.body);
 
-        users.addNewUser(user, (err, id) =>{
+        userModel.createAccount(user, (err, id) =>{
             if(err) return res.sendStatus(500)
 
             return res.status(201).json({ user_id: id });
@@ -36,18 +40,18 @@ const login = (req, res) => {
     const {error} = schema.validate(req.body);
     if (error) return res.status(400).json({ error_message: error.details[0].message });
 
-    users.authenticateUser(req.body.email, req.body.password, (err, id) => {
-    if(err === 404) return res.status(400).json({ error_message: "Invalid email/ password supplied" });
-    if(err) return res.sendStatus(500);
+    userModel.authenticateUser(req.body.email, req.body.password, (err, id) => {
+    if(!id) return res.status(400).json({ error_message: "Invalid email/ password supplied" });
+    if(err) return res.sendStatus(500).json({error_message: "Internal Server Error"});
 
-        users.getToken(id, (err, token) => {
-            if(err) return res.sendStatus(500);
+        userModel.getToken(id, (err, token) => {
+            if(err) return res.sendStatus(500).json({error_message: "Internal Server Error"});
 
             if(token){
                 return res.status(200).send({user_id: id, session_token: token})
             }
             else{
-                users.setToken(id, (err, token) => {
+                userModel.setToken(id, (err, token) => {
                     if (err) return res.sendStatus(500);
                     return res.status(200).send({user_id: id, session_token: token})
                 })
@@ -63,7 +67,7 @@ const logout = (req, res) => {
         return res.status(401).send({ message: "No token provided" });
     }
 
-    users.removeToken(token, (err, changes) => {
+    userModel.removeToken(token, (err, changes) => {
         if (err) return res.sendStatus(500);
 
         if (changes === 0)  return res.status(401).send({ message: "Invalid token" }) 
