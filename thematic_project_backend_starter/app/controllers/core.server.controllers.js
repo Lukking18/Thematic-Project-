@@ -2,20 +2,20 @@ const movies = require("../models/core.server.models");
 const Joi = require("joi");
 
 const search = (req, res) => {
-    //const schema = Joi.object({
-    //    searchText: Joi.string().allow(""),
-    //});
+    const schema = Joi.object({
+        searchText: Joi.string().allow(""),
+    });
 
-    //console.log(schema.validate(req.body));
+    console.log(schema.validate(req.body));
 
-    //const {error} = schema.validate(req.query);
-    //if (error) return res.status(400).json({ error_message : error.details[0].message });
+    const {error} = schema.validate(req.query);
+    if (error) return res.status(400).json({ error_message : error.details[0].message });
 
-    //const searchText = req.query.searchText || "";
+    const searchText = req.query.searchText || "";
 
 
 
-    movies.searchMovies( (err, results) => {
+    movies.searchMovies( searchText, (err, results) => {
         if(err) return res.sendStatus(500)
         return res.status(200).json(results);
     });
