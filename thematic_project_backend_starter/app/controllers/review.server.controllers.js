@@ -1,5 +1,5 @@
 const reviewModel = require("../models/review.server.models");
-
+const MovieModel = require("../models/core.server.models")
 const review = (req, res) => {
     // add check to see if user is signed in here...
 
@@ -16,7 +16,13 @@ const review = (req, res) => {
 
     //get id from token model call here
 
-    //get item call here
+    MovieModel.getSingleMovie(req.params.movie_id,(err,row) =>{
+        if(err){
+            return res.status(500).json({error_message: "Internal Server Error"});
+        } if(!row){
+            return res.status(404).json({error_message: "Movie not found"});
+        }
+    })
 
     reviewModel.add_review(req.params.movie_id, user_id, req.body.review_body,(err) =>{
         if(err){

@@ -22,7 +22,16 @@ const search = (req, res) => {
 }
 
 const get_movie = (req, res) => {
-    return res.sendStatus(500);
+    
+
+    movies.getSingleMovie(req.params.movie_id, (err,row) => {
+        if(err){
+            return res.status(500).json({error_message: "Internal Server Error"});
+        }
+        if(!row){
+            return res.status(404).json({error_message: "Movie not found"})
+        }
+    })
 }
 
 module.exports = {
