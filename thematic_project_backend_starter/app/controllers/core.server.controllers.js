@@ -8,6 +8,8 @@ const search = (req, res) => {
         searchReleaseDate: Joi.string().allow("").optional(),
         searchBudgetMin: Joi.number().optional(),
         searchBudgetMax: Joi.number().optional(),
+        searchRevenueMin: Joi.number().optional(),
+        searchRevenueMax: Joi.number().optional(),
 
     });
 
@@ -21,10 +23,12 @@ const search = (req, res) => {
     const searchReleaseDate = req.query.searchReleaseDate || "";
     const searchBudgetMin = req.query.searchBudgetMin;
     const searchBudgetMax = req.query.searchBudgetMax;
+    const searchRevenueMin = req.query.searchRevenueMin;
+    const searchRevenueMax = req.query.searchRevenueMax;
 
 
 
-    movies.searchMovies( searchTitle, searchGenre, searchReleaseDate, searchBudgetMin, searchBudgetMax, (err, results) => {
+    movies.searchMovies( searchTitle, searchGenre, searchReleaseDate, searchBudgetMin, searchBudgetMax, searchRevenueMin, searchRevenueMax, (err, results) => {
         if(err) return res.sendStatus(500)
         return res.status(200).json(results);
     });

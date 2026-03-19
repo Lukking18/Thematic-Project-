@@ -1,7 +1,7 @@
 const db = require('../../database')
 
 
-const searchMovies = (searchTitle, searchGenre, searchReleaseDate, searchBudgetMin, searchBudgetMax,  done) => {
+const searchMovies = (searchTitle, searchGenre, searchReleaseDate, searchBudgetMin, searchBudgetMax, searchRevenueMin, searchRevenueMax,  done) => {
     let sql = "SELECT * FROM Movies WHERE 1=1";
 
     const params = [];
@@ -34,6 +34,21 @@ const searchMovies = (searchTitle, searchGenre, searchReleaseDate, searchBudgetM
     if (searchBudgetMin && searchBudgetMax) {
         sql += " AND budget BETWEEN ? AND ?"
         params.push(Number(searchBudgetMin), Number(searchBudgetMax));
+    }
+
+    if (searchRevenueMin && !searchRevenueMax) {
+        sql += " AND revenue > ?"
+        params.push(Number(searchRevenueMin));
+    }
+
+    if (!searchRevenueMin && searchRevenueMax) {
+        sql += " AND revenue < ? AND revenue != 0"
+        params.push(Number(searchRevenueMax));
+    }
+
+    if (searchRevenueMin && searchRevenueMax) {
+        sql += " AND revenue BETWEEN ? AND ?"
+        params.push(Number(searchRevenueMin), Number(searchRevenueMax));
     }
 
    
