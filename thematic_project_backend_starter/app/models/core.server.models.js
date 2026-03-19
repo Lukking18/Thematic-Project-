@@ -1,7 +1,7 @@
 const db = require('../../database')
 
 
-const searchMovies = (searchTitle, searchGenre, searchReleaseDate, done) => {
+const searchMovies = (searchTitle, searchGenre, searchReleaseDate, searchBudgetMin, searchBudgetMax,  done) => {
     let sql = "SELECT * FROM Movies WHERE 1=1";
 
     const params = [];
@@ -12,24 +12,37 @@ const searchMovies = (searchTitle, searchGenre, searchReleaseDate, done) => {
     }
 
     if (searchGenre) {
-        sql += "AND genres LIKE ?"
+        sql += " AND genres LIKE ?"
         params.push(`%${searchGenre}%`);
     }
 
     if (searchReleaseDate) {
-        sql += "AND release_date LIKE ?"
+        sql += " AND release_date LIKE ?"
         params.push(`%${searchReleaseDate}%`);
     }
 
-    //const params = [`%${searchTitle}%`, `%${searchGenre}%`, `%${searchReleaseDate}%`];
+    if (searchBudgetMin && !searchBudgetMax) {
+        sql += " AND budget > ?"
+        params.push(Number(searchBudgetMin));
+    }
 
+    if (!searchBudgetMin && searchBudgetMax) {
+        sql += " AND budget < ?"
+        params.push(Number(searchBudgetMax));
+    }
+
+    if (searchBudgetMin && searchBudgetMax) {
+        sql += " AND budget BETWEEN ? AND ?"
+        params.push(Number(searchBudgetMin), Number(searchBudgetMax));
+    }
+
+   
     db.all(sql, params, (err, rows) => {
         if (err) return done(err); 
         return done(null, rows); 
     });
 };
-//Films released in selected years. 
-// Films with a budget within a selected range 
+
 // Films which generated revenue within a selected range 
 
 // Films starring selected actors 

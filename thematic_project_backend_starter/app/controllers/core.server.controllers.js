@@ -6,6 +6,8 @@ const search = (req, res) => {
         searchTitle: Joi.string().allow("").optional(),
         searchGenre: Joi.string().allow("").optional(),
         searchReleaseDate: Joi.string().allow("").optional(),
+        searchBudgetMin: Joi.number().optional(),
+        searchBudgetMax: Joi.number().optional(),
 
     });
 
@@ -17,15 +19,19 @@ const search = (req, res) => {
     const searchTitle = req.query.searchTitle || "";
     const searchGenre = req.query.searchGenre || "";
     const searchReleaseDate = req.query.searchReleaseDate || "";
+    const searchBudgetMin = req.query.searchBudgetMin;
+    const searchBudgetMax = req.query.searchBudgetMax;
 
 
 
-    movies.searchMovies( searchTitle, searchGenre, searchReleaseDate, (err, results) => {
+    movies.searchMovies( searchTitle, searchGenre, searchReleaseDate, searchBudgetMin, searchBudgetMax, (err, results) => {
         if(err) return res.sendStatus(500)
         return res.status(200).json(results);
     });
 }
 
+
+//do we even need this?
 const get_movie = (req, res) => {
     
 
