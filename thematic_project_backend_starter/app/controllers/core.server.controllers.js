@@ -3,7 +3,10 @@ const Joi = require("joi");
 
 const search = (req, res) => {
     const schema = Joi.object({
-        searchText: Joi.string().allow(""),
+        searchTitle: Joi.string().allow("").optional(),
+        searchGenre: Joi.string().allow("").optional(),
+        searchReleaseDate: Joi.string().allow("").optional(),
+
     });
 
     console.log(schema.validate(req.body));
@@ -11,11 +14,13 @@ const search = (req, res) => {
     const {error} = schema.validate(req.query);
     if (error) return res.status(400).json({ error_message : error.details[0].message });
 
-    const searchText = req.query.searchText || "";
+    const searchTitle = req.query.searchTitle || "";
+    const searchGenre = req.query.searchGenre || "";
+    const searchReleaseDate = req.query.searchReleaseDate || "";
 
 
 
-    movies.searchMovies( searchText, (err, results) => {
+    movies.searchMovies( searchTitle, searchGenre, searchReleaseDate, (err, results) => {
         if(err) return res.sendStatus(500)
         return res.status(200).json(results);
     });
