@@ -2,9 +2,9 @@ const db = require('../../database')
 
 
 const searchMovies = (searchText, done) => {
-    const sql = "SELECT * FROM Movies WHERE title LIKE ?";
+    const sql = "SELECT * FROM Movies WHERE title LIKE ? OR genres LIKE ?";
 
-    const params = [`%${searchText}%`];
+    const params = [`%${searchText}%`, `%${searchText}%`];
 
     db.all(sql, params, (err, rows) => {
         if (err) return done(err); 
