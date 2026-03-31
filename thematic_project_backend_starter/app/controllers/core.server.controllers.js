@@ -23,16 +23,33 @@ const search = (req, res) => {
 
 const get_movie = (req, res) => {
     
+    const getMoviePromise = new Promise(function(resolve,reject) {
 
     movies.getSingleMovie(req.params.movie_id, (err,row) => {
         if(err){
-            return res.status(500).json({error_message: "Internal Server Error"});
+            reject(err)
         }
-        if(!row){
-            return res.status(404).json({error_message: "Movie not found"})
+         else if(!row){
+            reject("Movie not found");
+        } else{
+            resolve(row);
         }
     })
-}
+})
+
+getMoviePromise.then(
+    function(row){
+        return res.json(row);
+    },
+    function(err){
+        if(err === "Movie not found"){
+           return res.status(404).json({error_message: err});
+    } else{
+        return res.status(500).json({error_message:"Internal server error"});
+    }
+    }
+);
+};
 
 module.exports = {
     search: search,
