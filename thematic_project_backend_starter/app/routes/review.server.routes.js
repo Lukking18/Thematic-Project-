@@ -5,7 +5,4 @@ module.exports = function(app){
         .post(authenticationMiddleware, reviews.review)
         .get(reviews.get_review);
 
-    app.route("/bookmark/:id")
-        .post(reviews.bookmark);
-
 }

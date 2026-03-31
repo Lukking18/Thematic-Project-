@@ -45,7 +45,7 @@ const authenticateUser = (email, password, done) => {
 
         let salt = Buffer.from(row.salt, 'hex')
 
-        if(row.password === userModel.getHash(password,salt)){
+        if(row.password === getHash(password,salt)){
             return done(null, row.user_id)
         } else{
             return done(null,null);

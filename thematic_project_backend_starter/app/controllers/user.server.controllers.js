@@ -73,7 +73,6 @@ const logout = (req, res) => {
         if (changes === 0)  return res.status(401).send({ message: "Invalid token" }) 
 
         return res.status(200).send({message: "Logged out successfully" });    
-        //2) Should return 200 status code for logging out user who is logged in
     })
 }
 
