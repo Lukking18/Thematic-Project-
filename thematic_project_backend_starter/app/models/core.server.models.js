@@ -1,54 +1,59 @@
 const db = require('../../database')
 
 
-const searchMovies = (searchTitle, searchGenre, searchReleaseDate, searchBudgetMin, searchBudgetMax, searchRevenueMin, searchRevenueMax,  done) => {
-    let sql = "SELECT * FROM Movies WHERE 1=1";
+const searchMovies = (searchTitle, searchGenre, searchReleaseDate, searchBudgetMin, searchBudgetMax, searchRevenueMin, searchRevenueMax, searchActor, searchDirector, done) => {
+    let sql = "SELECT m.*, c.actors FROM Movies AS m INNER JOIN Movie_cast AS c ON m.movie_id=c.id WHERE 1=1";
 
     const params = [];
 
     if (searchTitle) {
-        sql += " AND title LIKE ?";
+        sql += " AND m.title LIKE ?";
         params.push(`%${searchTitle}%`);
     }
 
     if (searchGenre) {
-        sql += " AND genres LIKE ?"
+        sql += " AND m.genres LIKE ?"
         params.push(`%${searchGenre}%`);
     }
 
     if (searchReleaseDate) {
-        sql += " AND release_date LIKE ?"
+        sql += " AND m.release_date LIKE ?"
         params.push(`%${searchReleaseDate}%`);
     }
 
     if (searchBudgetMin && !searchBudgetMax) {
-        sql += " AND budget > ?"
+        sql += " AND m.budget > ?"
         params.push(Number(searchBudgetMin));
     }
 
     if (!searchBudgetMin && searchBudgetMax) {
-        sql += " AND budget < ?"
+        sql += " AND m.budget < ?"
         params.push(Number(searchBudgetMax));
     }
 
     if (searchBudgetMin && searchBudgetMax) {
-        sql += " AND budget BETWEEN ? AND ?"
+        sql += " AND m.budget BETWEEN ? AND ?"
         params.push(Number(searchBudgetMin), Number(searchBudgetMax));
     }
 
     if (searchRevenueMin && !searchRevenueMax) {
-        sql += " AND revenue > ?"
+        sql += " AND m.revenue > ?"
         params.push(Number(searchRevenueMin));
     }
 
     if (!searchRevenueMin && searchRevenueMax) {
-        sql += " AND revenue < ? AND revenue != 0"
+        sql += " AND m.revenue < ? AND m.revenue != 0"
         params.push(Number(searchRevenueMax));
     }
 
     if (searchRevenueMin && searchRevenueMax) {
-        sql += " AND revenue BETWEEN ? AND ?"
+        sql += " AND m.revenue BETWEEN ? AND ?"
         params.push(Number(searchRevenueMin), Number(searchRevenueMax));
+    }
+
+    if (searchActor){
+        sql += " AND c.actors LIKE ?"
+        params.push(`%${searchActor}%`);
     }
 
    
@@ -58,9 +63,6 @@ const searchMovies = (searchTitle, searchGenre, searchReleaseDate, searchBudgetM
     });
 };
 
-// Films which generated revenue within a selected range 
-
-// Films starring selected actors 
 // Films directed by a selected director 
 // Search for a specific film title, actor or director. 
 
