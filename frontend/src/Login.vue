@@ -2,7 +2,7 @@
   <div class="login-container">
     <h1>Login</h1>
 
-    <form @submit.prevent="handleLogin" class="login-form">
+    <form @submit.prevent="handleSubmit" class="login-form">
       <label>Email</label>
       <input v-model="email" type="email" required />
 
@@ -17,43 +17,51 @@
 </template>
 
 <script>
-import axios from "axios";
-
+import { userServices } from "../src/services/user.service"
+import EmailValidator from 'email-validator'
 export default {
-  name: "LoginPage",
-  data() {
+  data(){
     return {
       email: "",
       password: "",
+      submitted:false,
       error: ""
-    };
+    }
   },
   methods: {
-    async handleLogin() {
-      this.error = "";
+    handleSubmit(e){
+      this.submitted = true
+      this.error = ""
+      const {email,password} = this
 
-      try {
-        const res = await axios.post("http://localhost:3333/login", {
-          email: this.email,
-          password: this.password
-        });
+      if(!(email && password)){
+        return;
+      }
 
-        // NEW CHECK — backend returns null when login fails
-        if (!res.data || !res.data.session_token) {
-          this.error = "Invalid email or password";
+      if(!(EmailValidator.validate(email))){
+        this.error = "Email isn't valid"
+        return;
+      }
+        const password_pattern = /^(?=.*[0-9])(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z])[A-Za-z0-9!@#$%^&*]{6,20}$/
+      
+        if(!(password_pattern.test(password))){
+          this.error = "Password does not meet regex"
           return;
         }
 
-        localStorage.setItem("token", res.data.session_token);
-        localStorage.setItem("user_id", res.data.user_id);
-
-        this.$router.push("/");
-      } catch (err) {
-        this.error = err.response?.data?.error_message || "Login failed";
-      }
+        userServices.login(email,password)
+        .then(result => {
+          console.log("Success!")
+          this.$router.push("/") // Choose the endpoint to actually go to Frontend team... 
+        })
+        .catch(error => {
+          this.error = error
+          this.submitted = false
+        })
     }
   }
-};
+}
+
 </script>
 
 

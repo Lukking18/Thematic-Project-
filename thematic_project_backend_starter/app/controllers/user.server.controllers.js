@@ -41,8 +41,8 @@ const login = (req, res) => {
     if (error) return res.status(400).json({ error_message: error.details[0].message });
 
     userModel.authenticateUser(req.body.email, req.body.password, (err, id) => {
-    if(!id) return res.status(400).json({ error_message: "Invalid email/ password supplied" });
-    if(err) return res.sendStatus(500).json({error_message: "Internal Server Error"});
+    if(err) return res.Status(500).json({error_message: "Internal Server Error"});
+        if(!id) return res.status(400).json({ error_message: "Invalid email/ password supplied" });
 
         userModel.getToken(id, (err, token) => {
             if(err) return res.sendStatus(500).json({error_message: "Internal Server Error"});
