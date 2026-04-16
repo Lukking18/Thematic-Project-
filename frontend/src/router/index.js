@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import LoginPage from "../Login.vue";
 import HomePage from "../Home.vue";
 import SignUpPage from "../SignUp.vue";
+import BrowsePage from "../Browse.vue";
 
 const routes = [
   { path: "/", component: HomePage, meta: { requiresAuth: true }
