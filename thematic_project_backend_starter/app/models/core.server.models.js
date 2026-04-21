@@ -2,7 +2,8 @@ const db = require('../../database')
 
 
 const searchMovies = (searchTitle, searchGenre, searchReleaseDate, searchBudgetMin, searchBudgetMax, searchRevenueMin, searchRevenueMax, searchActor, searchDirector, done) => {
-    let sql = "SELECT m.*, c.actors FROM Movies AS m INNER JOIN Movie_cast AS c ON m.movie_id=c.id WHERE 1=1";
+    let sql = "SELECT m.*, c.actors, d.director_name FROM Movies AS m LEFT JOIN Movie_cast AS c ON m.movie_id = c.id LEFT JOIN directors AS d ON m.movie_id = d.movie_id WHERE 1=1 ";
+
 
     const params = [];
 
@@ -54,6 +55,11 @@ const searchMovies = (searchTitle, searchGenre, searchReleaseDate, searchBudgetM
     if (searchActor){
         sql += " AND c.actors LIKE ?"
         params.push(`%${searchActor}%`);
+    }
+
+    if (searchDirector){
+        sql += " AND d.director_name LIKE ?"
+        params.push(`%${searchDirector}%`);
     }
 
    
