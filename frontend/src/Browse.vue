@@ -1,9 +1,21 @@
 <template>
-  <div class="browse-container">
+  <div > <!--class="browse-container"-->
     <h1>Browse Movies</h1>
 
-    <div class="movies-grid">
-      <div 
+    <div > <!--class="movies-grid"-->
+      <em v-if="loading">Loading movies...</em>
+
+        <ul v-if="movies.length">
+                <li v-for="movie in movies" :key="movie.movie_id">
+                  <h3>{{ movie.title }}</h3>
+                </li>
+            </ul>
+
+            <div v-if="error">
+                {{ error }}
+            </div>
+
+      <!--</ul>
          v-for="movie in movies"
           :key="movie.movie_id" 
           class="movie-card"
@@ -21,9 +33,11 @@
                 {{ error }}
             </div>
 
-        <h3>{{ movie.original_title }}</h3>
+        -->
+
+        
       
-      </div>
+      
     </div>
   </div>
 </template>
@@ -32,12 +46,14 @@
 // ❌ This file does not exist yet, so comment it out
 // import { movieServices } from "../services/movie.service"
   import { coreService } from "../src/services/core.service"
+  //import { userService } from "../src/services/user.service"
 
   export default {
     data() {
       return {
         movies: [],
         error: "",
+        loading: true
       }
     },
     mounted() {
@@ -51,15 +67,15 @@
       coreService.searchMovies()
             .then(movies => {
                 this.movies = movies
-                //this.loading = false
+                this.loading = false
             })
             .catch(error => this.error = error)
-    },
-    methods: {
+    }
+    /*methods: {
       goToMovie(id) {
         this.$router.push(`/movie/${id}`)
       }
     }
+    */
   }
 </script>
-
