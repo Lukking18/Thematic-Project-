@@ -24,7 +24,8 @@
 </template>
 
 <script>
-import { movieServices } from "../services/movie.service"
+// ❌ This file does not exist yet, so comment it out
+// import { movieServices } from "../services/movie.service"
 
 export default {
   data() {
@@ -33,9 +34,13 @@ export default {
     }
   },
   mounted() {
-    movieServices.getAllMovies()
-      .then(res => this.movies = res)
-      .catch(err => console.log(err))
+    // ❌ Comment out the call that breaks the app
+    // movieServices.getAllMovies()
+    //   .then(res => this.movies = res)
+    //   .catch(err => console.log(err))
+
+    // ✅ Temporary placeholder so the page doesn't break
+    this.movies = []
   },
   methods: {
     goToMovie(id) {
@@ -45,47 +50,3 @@ export default {
 }
 </script>
 
-<style>
-.browse-container {
-  max-width: 900px;
-  margin: auto;
-  padding: 20px;
-}
-
-.movies-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-  gap: 20px;
-}
-
-.movie-card {
-  background: #fff;
-  border-radius: 8px;
-  padding: 10px;
-  cursor: pointer;
-  text-align: center;
-  transition: 0.2s;
-  border: 1px solid #ddd;
-}
-
-.movie-card:hover {
-  transform: scale(1.03);
-}
-
-.movie-card img {
-  width: 100%;
-  height: 220px;
-  object-fit: cover;
-  border-radius: 6px;
-}
-
-.no-poster {
-  width: 100%;
-  height: 220px;
-  background: #eee;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 6px;
-}
-</style>

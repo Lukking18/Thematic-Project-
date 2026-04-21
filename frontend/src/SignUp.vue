@@ -51,6 +51,9 @@ export default {
 
         console.log("Account created:", res.data);
 
+        localStorage.setItem("signup_email", this.email);
+        localStorage.setItem("signup_password", this.password);
+
         this.$router.push("/login");
       } catch (err) {
         this.error = err.response?.data?.error_message || "Something went wrong";

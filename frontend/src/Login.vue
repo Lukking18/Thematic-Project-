@@ -19,6 +19,7 @@
 <script>
 import { userServices } from "../src/services/user.service"
 import EmailValidator from 'email-validator'
+
 export default {
   data(){
     return {
@@ -28,6 +29,20 @@ export default {
       error: ""
     }
   },
+
+  mounted() {
+    const savedEmail = localStorage.getItem("signup_email");
+    const savedPassword = localStorage.getItem("signup_password");
+
+    if (savedEmail && savedPassword) {
+      this.email = savedEmail;
+      this.password = savedPassword;
+
+      localStorage.removeItem("signup_email");
+      localStorage.removeItem("signup_password");
+    }
+  },
+
   methods: {
     handleSubmit(e){
       this.submitted = true
@@ -42,28 +57,31 @@ export default {
         this.error = "Email isn't valid"
         return;
       }
-        const password_pattern = /^(?=.*[0-9])(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z])[A-Za-z0-9!@#$%^&*]{6,20}$/
-      
-        if(!(password_pattern.test(password))){
-          this.error = "Password does not meet regex"
-          return;
-        }
 
-        userServices.login(email,password)
-        .then(result => {
-          console.log("Success!")
-          this.$router.push("/") // Choose the endpoint to actually go to Frontend team... 
-        })
-        .catch(error => {
-          this.error = error
-          this.submitted = false
-        })
+      const password_pattern = /^(?=.*[0-9])(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z])[A-Za-z0-9!@#$%^&*]{6,20}$/
+      
+      if(!(password_pattern.test(password))){
+        this.error = "Password does not meet regex"
+        return;
+      }
+
+      userServices.login(email,password)
+      .then(result => {
+        console.log("Success!")
+
+        localStorage.setItem("session_token", result.session_token)
+        localStorage.setItem("user_id", result.user_id)
+
+        this.$router.push("/")
+      })
+      .catch(error => {
+        this.error = error
+        this.submitted = false
+      })
     }
   }
 }
-
 </script>
-
 
 <style scoped>
 .login-container {
@@ -81,4 +99,3 @@ export default {
   color: red;
 }
 </style>
-

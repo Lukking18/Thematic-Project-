@@ -9,7 +9,7 @@ const createAccount = (user, done) => {
     const salt = crypto.randomBytes(64);
     const hash = getHash(user.password, salt);
 
-    const sql = "INSERT INTO users (first_name, last_name, email, password, salt) VALUES (?,?,?,?,?)";
+    const sql = "INSERT INTO users (first_name, last_name, Email, Password, salt) VALUES (?,?,?,?,?)";
     let values = [user.first_name, user.last_name, user.email, hash, salt.toString('hex')];
 
     db.run(sql, values, function(err){
@@ -20,7 +20,7 @@ const createAccount = (user, done) => {
 
 
 const testDuplicateEmail = (email, done) => {
-    const sql = "SELECT * FROM users WHERE email = ?";
+    const sql = "SELECT * FROM Users WHERE Email = ?";
 
     db.get(sql,[email],(err,row) => {
         if(err){
@@ -35,7 +35,7 @@ const testDuplicateEmail = (email, done) => {
 
 
 const authenticateUser = (email, password, done) => {
-    const sql = "SELECT user_id, password, salt FROM users WHERE email = ?"
+    const sql = "SELECT user_id, Password AS password, salt FROM Users WHERE Email = ?"
 
     db.get(sql, [email], (err,row) =>{
         if(err) return done(err);
@@ -55,7 +55,7 @@ const authenticateUser = (email, password, done) => {
 
 
 const getToken = (id, done) => {
-    const sql = "SELECT session_token FROM users WHERE user_id = ?"
+    const sql = "SELECT session_token FROM Users WHERE user_id = ?"
 
     db.get(sql,[id], (err,row) => {
         if(err){
@@ -71,7 +71,7 @@ const getToken = (id, done) => {
 const setToken = (id,done) => {
     let token = crypto.randomBytes(16).toString('hex');
     
-    const sql = "UPDATE users SET session_token = ? WHERE user_id = ?"
+    const sql = "UPDATE Users SET session_token = ? WHERE user_id = ?"
 
 
     db.run(sql,[token, id], (err) =>{
@@ -81,7 +81,7 @@ const setToken = (id,done) => {
 
 
 const removeToken = (token, done) => {
-    const sql = "UPDATE users SET session_token = null WHERE session_token = ?"
+    const sql = "UPDATE Users SET session_token = null WHERE session_token = ?"
 
     db.run(sql,[token],(err) =>{
         return done(err)

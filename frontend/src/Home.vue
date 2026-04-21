@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>Home Page</h1>
-    <p>You are logged in.</p>
+    <p>This is the homepage.</p>
   </div>
 </template>
 
