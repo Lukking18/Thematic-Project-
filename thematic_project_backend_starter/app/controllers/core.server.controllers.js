@@ -21,16 +21,12 @@ const search = (req, res) => {
     if (error) return res.status(400).json({ error_message : error.details[0].message });
 
     const searchText = req.query.searchText || "";
-    //const searchGenre = req.query.searchGenre || "";
     const searchReleaseDate = req.query.searchReleaseDate || "";
     const searchBudgetMin = req.query.searchBudgetMin;
     const searchBudgetMax = req.query.searchBudgetMax;
     const searchRevenueMin = req.query.searchRevenueMin;
     const searchRevenueMax = req.query.searchRevenueMax;
-    //const searchActor = req.query.searchActor || "";
-    //const searchDirector = req.query.searchDirector || "";
-
-
+  
 
     movies.searchMovies( searchText, searchReleaseDate, searchBudgetMin, searchBudgetMax, searchRevenueMin, searchRevenueMax, (err, results) => {
         if(err) return res.sendStatus(500)
