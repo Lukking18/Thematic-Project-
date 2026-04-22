@@ -3,15 +3,15 @@ const Joi = require("joi");
 
 const search = (req, res) => {
     const schema = Joi.object({
-        searchTitle: Joi.string().allow("").optional(),
-        searchGenre: Joi.string().allow("").optional(),
+        searchText: Joi.string().allow("").optional(),
+        //searchGenre: Joi.string().allow("").optional(),
         searchReleaseDate: Joi.string().allow("").optional(),
         searchBudgetMin: Joi.number().optional(),
         searchBudgetMax: Joi.number().optional(),
         searchRevenueMin: Joi.number().optional(),
-        searchRevenueMax: Joi.number().optional(),
-        searchActor: Joi.string().allow("").optional(),
-        searchDirector: Joi.string().allow("").optional(),
+        searchRevenueMax: Joi.number().optional()
+        //searchActor: Joi.string().allow("").optional(),
+        //searchDirector: Joi.string().allow("").optional(),
 
     });
 
@@ -20,19 +20,19 @@ const search = (req, res) => {
     const {error} = schema.validate(req.query);
     if (error) return res.status(400).json({ error_message : error.details[0].message });
 
-    const searchTitle = req.query.searchTitle || "";
-    const searchGenre = req.query.searchGenre || "";
+    const searchText = req.query.searchText || "";
+    //const searchGenre = req.query.searchGenre || "";
     const searchReleaseDate = req.query.searchReleaseDate || "";
     const searchBudgetMin = req.query.searchBudgetMin;
     const searchBudgetMax = req.query.searchBudgetMax;
     const searchRevenueMin = req.query.searchRevenueMin;
     const searchRevenueMax = req.query.searchRevenueMax;
-    const searchActor = req.query.searchActor || "";
-    const searchDirector = req.query.searchDirector || "";
+    //const searchActor = req.query.searchActor || "";
+    //const searchDirector = req.query.searchDirector || "";
 
 
 
-    movies.searchMovies( searchTitle, searchGenre, searchReleaseDate, searchBudgetMin, searchBudgetMax, searchRevenueMin, searchRevenueMax, searchActor, searchDirector, (err, results) => {
+    movies.searchMovies( searchText, searchReleaseDate, searchBudgetMin, searchBudgetMax, searchRevenueMin, searchRevenueMax, (err, results) => {
         if(err) return res.sendStatus(500)
         return res.status(200).json(results);
     });

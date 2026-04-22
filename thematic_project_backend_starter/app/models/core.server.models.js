@@ -1,21 +1,22 @@
 const db = require('../../database')
 
 
-const searchMovies = (searchTitle, searchGenre, searchReleaseDate, searchBudgetMin, searchBudgetMax, searchRevenueMin, searchRevenueMax, searchActor, searchDirector, done) => {
+const searchMovies = (searchText, searchReleaseDate, searchBudgetMin, searchBudgetMax, searchRevenueMin, searchRevenueMax, done) => {
     let sql = "SELECT m.*, c.actors, d.director_name FROM Movies AS m LEFT JOIN Movie_cast AS c ON m.movie_id = c.id LEFT JOIN directors AS d ON m.movie_id = d.movie_id WHERE 1=1 ";
 
 
     const params = [];
 
-    if (searchTitle) {
-        sql += " AND m.title LIKE ?";
-        params.push(`%${searchTitle}%`);
+    if (searchText) {
+        sql += " AND ( m.title LIKE ? OR m.genres LIKE ? OR c.actors LIKE ? OR d.director_name LIKE ?) ";
+        params.push(`%${searchText}%`);
     }
 
-    if (searchGenre) {
+    /*if (searchGenre) {
         sql += " AND m.genres LIKE ?"
         params.push(`%${searchGenre}%`);
     }
+    */    
 
     if (searchReleaseDate) {
         sql += " AND m.release_date LIKE ?"
@@ -52,6 +53,7 @@ const searchMovies = (searchTitle, searchGenre, searchReleaseDate, searchBudgetM
         params.push(Number(searchRevenueMin), Number(searchRevenueMax));
     }
 
+    /*
     if (searchActor){
         sql += " AND c.actors LIKE ?"
         params.push(`%${searchActor}%`);
@@ -61,6 +63,7 @@ const searchMovies = (searchTitle, searchGenre, searchReleaseDate, searchBudgetM
         sql += " AND d.director_name LIKE ?"
         params.push(`%${searchDirector}%`);
     }
+    */
 
    
     db.all(sql, params, (err, rows) => {
