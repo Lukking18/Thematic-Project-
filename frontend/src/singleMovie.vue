@@ -8,11 +8,11 @@
     </div>
           
             <div class="movie-info-hero">
-              <h2>{{ movie.title }} <span class="year">({{ movie.year }})</span></h2>
+              <h2>{{ movie.title }} <span class="year">({{ movie.release_date }})</span></h2>
 
               
               <div class="metadata-row">
-                <span class="director">🎬 Dir: {{ movie.director }}</span>
+                <span class="director">🎬 Dir: {{ movie.director_name }}</span>
                 <p>Budget: {{ movie.budget }}</p>
                 <p>Revenue: {{ movie.revenue }}</p>
               </div>
@@ -20,6 +20,12 @@
               <div class="genres">
                 <span class="genre-tag">{{ movie.genres }}</span>
               </div>
+
+              <div class="genres">
+                <span class="genre-tag">{{ movie.actors }}</span>
+              </div>
+
+            
               
             </div>
     </div>
@@ -75,7 +81,10 @@ export default {
         budget: 0,
         revenue: 0,
         genres: "",
-      
+        actors: "",
+        director_name: "",
+        release_date: "",
+    
       },
       loading: true,
       movie_id: null,

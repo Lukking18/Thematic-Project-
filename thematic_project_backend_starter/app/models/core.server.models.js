@@ -77,7 +77,7 @@ const searchMovies = (searchText, searchReleaseDate, searchBudgetMin, searchBudg
 
 const getSingleMovie = (movie_id, done) => {
 
-    const sql = "SELECT * FROM Movies WHERE movie_id = ?"
+    const sql = "SELECT m.*, c.actors, d.director_name FROM Movies AS m LEFT JOIN Movie_cast AS c ON m.movie_id = c.id LEFT JOIN directors AS d ON m.movie_id = d.movie_id  WHERE m.movie_id = ?"
 
     db.get(sql, [movie_id],(err,row) => {
         if(err){
