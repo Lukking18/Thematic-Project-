@@ -5,6 +5,6 @@ module.exports = function(app){
         .get(movies.search);
 
     app.route("/movie/:id")
-        .get(movies.get_movie);
+        .get(movies.getSingleMovie);
 
 }

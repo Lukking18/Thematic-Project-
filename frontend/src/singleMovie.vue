@@ -3,40 +3,30 @@
     <div v-if="movie" class="movie-card">
       
       <!-- Top banner section with blurred background -->
-      <div class="movie-banner" :style="{ backgroundImage: `url(${movie.posterUrl})` }"> <!--this can't work as there are no images or posters in the database nor are there the backend endpoints to support it-->
-        <div class="banner-overlay">
-          <div class="banner-content">
-            <div class="movie-poster">
-              <img v-if="movie.posterUrl" :src="movie.posterUrl" :alt="movie.title + ' poster'" class="poster-image" />
-              <div v-else class="poster-placeholder">
-                <span>No Poster</span>
-              </div>
-            </div>
-            
+    <div class="loading-state">
+      <!--<p v-if="loading">Loading cinematic experience...</p>-->
+    </div>
+          
             <div class="movie-info-hero">
-              <h2>{{ movie.title }} <span class="year">({{ movie.year }})</span></h2> <!-- try movie.release_date-->
+              <h2>{{ movie.title }} <span class="year">({{ movie.year }})</span></h2>
+
               
               <div class="metadata-row">
-                <span class="rating-badge">⭐ {{ movie.rating }} / 10</span> <!-- not sure home to get this from the database -->
-                <span class="duration">⏱ {{ movie.duration }} min</span> <!-- not in the database so can't work-->
                 <span class="director">🎬 Dir: {{ movie.director }}</span>
+                <p>Budget: {{ movie.budget }}</p>
+                <p>Revenue: {{ movie.revenue }}</p>
               </div>
               
               <div class="genres">
-                <span v-for="tag in movie.genre" :key="tag" class="genre-tag">{{ tag }}</span>
+                <span class="genre-tag">{{ movie.genres }}</span>
               </div>
               
-              <div class="synopsis-box">
-                <h3>Synopsis</h3>
-                <p>{{ movie.synopsis }}</p> <!-- there isn't one of these in the database -->
-              </div>
             </div>
-          </div>
-        </div>
-      </div>
+    </div>
+  </div>
+    
       
       <!-- Review section below -->
-       <!-- there are review endpoints that luke coded which can be used here-->
       <div class="reviews-section">
         <div class="reviews-header">
           <h3>User Reviews</h3>
@@ -69,57 +59,53 @@
         </div>
       </div>
 
-    </div>
-    
-    <div v-else class="loading-state">
-      <div class="spinner"></div>
-      <p>Loading cinematic experience...</p>
-    </div>
-  </div>
 </template>
 
 <script>
+
+import { coreService } from "../src/services/core.service"
+import { reviewService } from "../src/services/review.service"
+
 export default {
   name: 'SingleMovie',
   data() {
     return {
-      // Mock data populated to represent a complete review page
       movie: {
-        id: 1,
-        title: 'Inception',
-        year: '2010',
-        director: 'Christopher Nolan',
-        genre: ['Sci-Fi', 'Action', 'Thriller'],
-        rating: 8.8,
-        duration: 148,
-        synopsis: 'A thief who steals corporate secrets through the use of dream-sharing technology is given the inverse task of planting an idea into the mind of a C.E.O. The lines between reality and dream begin to blur as the team descends deeper into the subconscious.',
-        posterUrl: 'https://m.media-amazon.com/images/I/81p+xe8cbnL._AC_SY679_.jpg'
+        name: "",
+        budget: 0,
+        revenue: 0,
+        genres: "",
+      
       },
-      reviews: [
-        { 
-          id: 1, 
-          author: 'MovieCritic99', 
-          rating: 9, 
-          text: 'Absolutely fantastic! The visual effects were stunning and the plot kept me on the edge of my seat from start to finish. A true masterpiece by Nolan.',
-          date: 'Oct 12, 2025'
-        },
-        { 
-          id: 2, 
-          author: 'CasualViewer', 
-          rating: 7, 
-          text: 'Good movie, but the pacing was a bit slow in the middle and it got slightly confusing with all the different dream layers. Still worth a watch.',
-          date: 'Nov 03, 2025'
-        }
-      ]
+      loading: true,
+      movie_id: null,
+      reviews: [],
+      error: null,
+
     }
   },
-  mounted() {
-    // Note: When hooked to the backend, you would fetch real data here
-    // const movieId = this.$route.params.id;
-    // this.fetchMovieDetails(movieId);
-    // this.fetchMovieReviews(movieId);
+  async mounted() {
+    const movieId = this.$route.params.id;
+    this.loading = true;
+    coreService.getSingleMovie(this.$route.params.id)
+      .then((movie) => {
+        this.movie = movie
+      })
+      .catch(error => this.error = error)
+
+    reviewService.viewReview(this.$route.params.id)
+      .then((res) => {
+        this.reviews = {
+          ...res
+    
+        }
+      })
+      .catch(error => this.error = error)
+
+      
+    }
   }
-}
+
 </script>
 
 <style scoped>

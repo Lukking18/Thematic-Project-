@@ -34,37 +34,25 @@ const search = (req, res) => {
     });
 }
 
-const get_movie = (req, res) => {
-    
-    const getMoviePromise = new Promise(function(resolve,reject) {
+const getSingleMovie = (req, res) => {
+    const movie_id = req.params.id;   // matches /movie/:id route
 
-    movies.getSingleMovie(req.params.movie_id, (err,row) => {
-        if(err){
-            reject(err)
+    movies.getSingleMovie(movie_id, (err, movie) => {
+        if (err) {
+            return res.status(500).json({ error_message: "Internal Server Error" });
         }
-         else if(!row){
-            reject("Movie not found");
-        } else{
-            resolve(row);
-        }
-    })
-})
 
-getMoviePromise.then(
-    function(row){
-        return res.json(row);
-    },
-    function(err){
-        if(err === "Movie not found"){
-           return res.status(404).json({error_message: err});
-    } else{
-        return res.status(500).json({error_message:"Internal server error"});
-    }
-    }
-);
+        if (!movie) {
+            return res.status(404).json({ error_message: "Movie not found" });
+        }
+
+        return res.status(200).json(movie);
+    });
 };
+
+
 
 module.exports = {
     search: search,
-    get_movie: get_movie
+    getSingleMovie: getSingleMovie
 }

@@ -11,7 +11,7 @@ const routes = [
   { path: "/login", component: LoginPage },
   {path: "/signup", component: SignUpPage},
   {path: "/browse", component: BrowsePage},
-  {path: "/item/:id", component: singleMovie}
+  {path: "/movie/:id", component: singleMovie}
 ];
 
 const router = createRouter({

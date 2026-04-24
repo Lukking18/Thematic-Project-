@@ -7,7 +7,10 @@
 
         <ul v-if="movies.length">
                 <li v-for="movie in movies" :key="movie.movie_id">
+                  <!-- uncomment when singlemovie page is working-->
+                  <router-link :to="'/movie/' + movie.movie_id">
                   <h3>{{ movie.title }}</h3>
+                  </router-link>
                 </li>
             </ul>
 
