@@ -53,7 +53,15 @@
       return {
         movies: [],
         error: "",
-        loading: true
+        loading: true,
+        searchQuery: {
+        searchText: '',
+        searchReleaseDate: null,
+        searchBudgetMin: null,
+        searchBudgetMax: null ,
+        searchRevenueMin: null,
+        searchRevenueMax: null,
+      },
       }
     },
     mounted() {
@@ -64,7 +72,7 @@
 
       // ✅ Temporary placeholder so the page doesn't break
       //this.movies = []
-      coreService.searchMovies()
+      coreService.searchMovies(this.searchQuery)
             .then(movies => {
                 this.movies = movies
                 this.loading = false

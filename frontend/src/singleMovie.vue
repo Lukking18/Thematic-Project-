@@ -3,7 +3,7 @@
     <div v-if="movie" class="movie-card">
       
       <!-- Top banner section with blurred background -->
-      <div class="movie-banner" :style="{ backgroundImage: `url(${movie.posterUrl})` }">
+      <div class="movie-banner" :style="{ backgroundImage: `url(${movie.posterUrl})` }"> <!--this can't work as there are no images or posters in the database nor are there the backend endpoints to support it-->
         <div class="banner-overlay">
           <div class="banner-content">
             <div class="movie-poster">
@@ -14,11 +14,11 @@
             </div>
             
             <div class="movie-info-hero">
-              <h2>{{ movie.title }} <span class="year">({{ movie.year }})</span></h2>
+              <h2>{{ movie.title }} <span class="year">({{ movie.year }})</span></h2> <!-- try movie.release_date-->
               
               <div class="metadata-row">
-                <span class="rating-badge">⭐ {{ movie.rating }} / 10</span>
-                <span class="duration">⏱ {{ movie.duration }} min</span>
+                <span class="rating-badge">⭐ {{ movie.rating }} / 10</span> <!-- not sure home to get this from the database -->
+                <span class="duration">⏱ {{ movie.duration }} min</span> <!-- not in the database so can't work-->
                 <span class="director">🎬 Dir: {{ movie.director }}</span>
               </div>
               
@@ -28,7 +28,7 @@
               
               <div class="synopsis-box">
                 <h3>Synopsis</h3>
-                <p>{{ movie.synopsis }}</p>
+                <p>{{ movie.synopsis }}</p> <!-- there isn't one of these in the database -->
               </div>
             </div>
           </div>
@@ -36,6 +36,7 @@
       </div>
       
       <!-- Review section below -->
+       <!-- there are review endpoints that luke coded which can be used here-->
       <div class="reviews-section">
         <div class="reviews-header">
           <h3>User Reviews</h3>
