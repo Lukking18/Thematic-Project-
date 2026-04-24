@@ -91,28 +91,35 @@
 </template>
 
 <script>
+import { coreService } from "../src/services/core.service";
+
 export default {
   data() {
     return {
       movies: [],
       error: "",
       loading: false,
-
       searchQuery: {
         searchText: "",
         searchReleaseDate: "",
-        searchBudgetMin: "",
-        searchBudgetMax: "",
-        searchRevenueMin: "",
-        searchRevenueMax: "",
+        searchBudgetMin: null,
+        searchBudgetMax: null,
+        searchRevenueMin: null,
+        searchRevenueMax: null,
       },
     };
   },
 
   mounted() {
-    this.fetchMovies();
+    //this.fetchMovies();
+    coreService.searchMovies(this.searchQuery)
+            .then(items => {
+                this.items = items
+                this.loading = false
+            })
+            .catch(error => this.error = error)
   },
-
+/*
   methods: {
     fetchMovies() {
       this.loading = true;
@@ -132,12 +139,14 @@ export default {
           this.loading = false;
         });
     },
+    
 
     formatNumber(num) {
       if (!num) return "0";
       return Number(num).toLocaleString();
     },
   },
+  */
 };
 </script>
 
