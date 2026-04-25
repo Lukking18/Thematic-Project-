@@ -24,13 +24,13 @@
       <!-- Budget Min/Max -->
       <div class="filter-row">
         <input
-          v-model="searchQuery.searchBudgetMin"
+          v-model.number="searchQuery.searchBudgetMin"
           type="number"
           placeholder="Min Budget"
           class="filter-input"
         />
         <input
-          v-model="searchQuery.searchBudgetMax"
+          v-model.number="searchQuery.searchBudgetMax"
           type="number"
           placeholder="Max Budget"
           class="filter-input"
@@ -40,13 +40,13 @@
       <!-- Revenue Min/Max -->
       <div class="filter-row">
         <input
-          v-model="searchQuery.searchRevenueMin"
+          v-model.number="searchQuery.searchRevenueMin"
           type="number"
           placeholder="Min Revenue"
           class="filter-input"
         />
         <input
-          v-model="searchQuery.searchRevenueMax"
+          v-model.number="searchQuery.searchRevenueMax"
           type="number"
           placeholder="Max Revenue"
           class="filter-input"
