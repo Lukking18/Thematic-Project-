@@ -9,7 +9,7 @@ const searchMovies = (searchText, searchReleaseDate, searchBudgetMin, searchBudg
 
     if (searchText) {
         sql += " AND ( m.title LIKE ? OR m.genres LIKE ? OR c.actors LIKE ? OR d.director_name LIKE ?) ";
-        params.push(`%${searchText}%`);
+        params.push(`%${searchText}%`, `%${searchText}%`, `%${searchText}%`, `%${searchText}%`);
     }
 
     /*if (searchGenre) {
@@ -52,6 +52,8 @@ const searchMovies = (searchText, searchReleaseDate, searchBudgetMin, searchBudg
         sql += " AND m.revenue BETWEEN ? AND ?"
         params.push(Number(searchRevenueMin), Number(searchRevenueMax));
     }
+
+    sql += " LIMIT 100"
 
     /*
     if (searchActor){

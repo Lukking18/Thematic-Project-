@@ -72,7 +72,7 @@ export default {
         localStorage.setItem("session_token", result.session_token)
         localStorage.setItem("user_id", result.user_id)
 
-        this.$router.push("/")
+        this.$router.push("/browse")
       })
       .catch(error => {
         this.error = error

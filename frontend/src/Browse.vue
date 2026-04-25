@@ -3,7 +3,7 @@
     <h1 class="page-title">Browse Movies</h1>
 
     <!-- SEARCH + FILTER FORM -->
-    <form class="search-form" @submit.prevent="fetchMovies">
+    <form class="search-form" @submit.prevent="searchMovies">
 
       <!-- Search Text -->
       <input
@@ -113,20 +113,30 @@ export default {
   mounted() {
     //this.fetchMovies();
     coreService.searchMovies(this.searchQuery)
-            .then(items => {
-                this.items = items
+            .then(movies => {
+                this.movies = movies
                 this.loading = false
             })
             .catch(error => this.error = error)
   },
-/*
+
   methods: {
-    fetchMovies() {
+    async searchMovies() {
       this.loading = true;
       this.error = "";
 
-      const queryString = new URLSearchParams(this.searchQuery).toString();
+      try {
+        const movies = await coreService.searchMovies(this.searchQuery);
+        this.movies = movies;
+      } catch (err) {
+        this.error = "Failed to load movies";
+      } finally {
+        this.loading = false;
+      }
+    },
 
+      //const queryString = new URLSearchParams(this.searchQuery).toString();
+/*
       fetch(`http://localhost:3333/search?${queryString}`)
         .then((res) => res.json())
         .then((data) => {
@@ -139,14 +149,13 @@ export default {
           this.loading = false;
         });
     },
-    
+    */
 
     formatNumber(num) {
       if (!num) return "0";
       return Number(num).toLocaleString();
     },
   },
-  */
 };
 </script>
 
