@@ -4,7 +4,7 @@
       <h2 class="logo">My App</h2>
 
       <ul class="nav-links">
-        <li><router-link to="/">Home</router-link></li>
+        <li><router-link to="/browse">Home</router-link></li>
 
         <li v-if="!isLoggedIn"><router-link to="/login">Login</router-link></li>
         <li v-if="!isLoggedIn"><router-link to="/signup">Sign Up</router-link></li>
