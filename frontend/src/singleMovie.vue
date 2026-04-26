@@ -36,7 +36,7 @@
       <div class="reviews-section">
         <div class="reviews-header">
           <h3>User Reviews</h3>
-          <button class="add-review-btn">
+          <button @click="toggleModal" type="button" class="button">
             <span>+</span> Write Review
           </button>
         </div>
@@ -65,15 +65,41 @@
         </div>
       </div>
 
+
+      <div class="review-modal">
+      <Modal @close="toggleModal" :modalActive="modalActive">
+      <form @submit.prevent="handleSubmit"> 
+      <label for="review" class="review-label">Review</label> 
+      <textarea class="form-control" name="review" v-model="review" rows="4" cols="50"></textarea> 
+      <div v-show="submitted && !review">Review can't be empty</div> 
+      <div> 
+      <button class="button">Submit!</button> 
+      </div> 
+      <div v-if="error">{{ error }}</div> 
+    </form>
+    </Modal>
+  </div>
 </template>
 
 <script>
-
+import Modal from "../src/components/Modal.vue"
+import { ref } from "vue"
 import { coreService } from "../src/services/core.service"
 import { reviewService } from "../src/services/review.service"
 
 export default {
   name: 'SingleMovie',
+  components: {
+    Modal,
+  },
+  setup(){
+    const modalActive = ref(false);
+
+    const toggleModal = () => {
+      modalActive.value = !modalActive.value;
+    }
+    return { modalActive, toggleModal }
+  },
   data() {
     return {
       movie: {
@@ -159,7 +185,21 @@ export default {
   flex-shrink: 0;
   z-index: 2;
 }
-
+.button{
+      background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  color: white;
+  border: none;
+  padding: 0.6rem 1.4rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+  transition: all 0.2s ease;
+}
 .poster-image {
   width: 240px;
   height: auto;
