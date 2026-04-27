@@ -41,11 +41,15 @@ const login = (req, res) => {
     if (error) return res.status(400).json({ error_message: error.details[0].message });
 
     userModel.authenticateUser(req.body.email, req.body.password, (err, id) => {
+<<<<<<< Updated upstream
     if(err) return res.Status(500).json({error_message: "Internal Server Error"});
+=======
+        if(err) return res.sendStatus(500); // ✅ FIXED: error checked first
+>>>>>>> Stashed changes
         if(!id) return res.status(400).json({ error_message: "Invalid email/ password supplied" });
 
         userModel.getToken(id, (err, token) => {
-            if(err) return res.sendStatus(500).json({error_message: "Internal Server Error"});
+            if(err) return res.sendStatus(500);
 
             if(token){
                 return res.status(200).send({user_id: id, session_token: token})
@@ -81,4 +85,3 @@ module.exports = {
     login: login,
     logout: logout
 }
-

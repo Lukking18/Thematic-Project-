@@ -160,10 +160,16 @@ export default {
 </script>
 
 <style>
+body {
+  background-color: #0f1f3d;
+}
+
 .browse-container {
   max-width: 1100px;
   margin: auto;
   padding: 20px;
+  min-height: 100vh;
+  color: white;
 }
 
 .page-title {
@@ -172,35 +178,55 @@ export default {
 }
 
 .search-form {
-  display: flex;
+  background: #162b4f;
+  padding: 22px;
+  border-radius: 14px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+   display: flex;
   flex-direction: column;
-  gap: 10px;
-  margin-bottom: 25px;
+  gap: 12px;
+  max-width: 900px;
+  margin: 0 auto 35px auto;
 }
 
 .search-input,
 .filter-input {
-  padding: 10px;
-  border-radius: 6px;
+  padding: 12px;
+  border-radius: 8px;
   border: 1px solid #ccc;
+  font-size: 15px;
+}
+
+.search-input {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.filter-input {
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .filter-row {
-  display: flex;
-  gap: 10px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
 }
 
 .search-btn {
-  padding: 10px;
+  padding: 12px;
   background: #2b6cb0;
   color: white;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
+  font-weight: bold;
 }
 
 .search-btn:hover {
-  background: #1e4f80;
+  background: #3b82f6;
+  font-weight: bold;
+  border-radius: 8px;
 }
 
 .movies-grid {
@@ -210,14 +236,15 @@ export default {
 }
 
 .movie-card {
-  padding: 15px;
-  border-radius: 10px;
-  background: #f8f8f8;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  background: #162b4f;
+  color: white;
+  border: 1px solid #29466f;
+  padding: 20px;
+  border-radius: 12px;
 }
 
 .movie-title {
-  margin-bottom: 10px;
+  color: #93c5fd;
 }
 
 .loading {

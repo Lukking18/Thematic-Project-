@@ -64,6 +64,10 @@ export default {
 </script>
 
 <style scoped>
+div {
+  color: white;
+}
+
 .signup-container {
   max-width: 400px;
   margin: 40px auto;
@@ -77,5 +81,22 @@ export default {
 
 .error {
   color: red;
+}
+
+.signup-form input {
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 15px;
+  box-sizing: border-box;
+}
+
+.signup-form button {
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+  background: #2b6cb0;
+  color: white;
+  font-weight: bold;
 }
 </style>

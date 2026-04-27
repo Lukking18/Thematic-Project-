@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <nav class="navbar">
-      <h2 class="logo">My App</h2>
+      <h2 class="logo">Movie Box</h2>
 
       <ul class="nav-links">
         <li><router-link to="/browse">Home</router-link></li>
@@ -73,7 +73,7 @@ export default {
   justify-content: space-between;
   align-items: center;
   padding: 15px 25px;
-  background-color: #333;
+  background-color: #0f1f3d;
   color: white;
 }
 

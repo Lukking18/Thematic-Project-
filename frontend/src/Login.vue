@@ -87,6 +87,7 @@ export default {
 .login-container {
   max-width: 400px;
   margin: 40px auto;
+  color: white;
 }
 
 .login-form {
@@ -97,5 +98,22 @@ export default {
 
 .error {
   color: red;
+}
+
+.login-form input {
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 15px;
+  box-sizing: border-box;
+}
+
+.login-form button {
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+  background: #2b6cb0;
+  color: white;
+  font-weight: bold;
 }
 </style>

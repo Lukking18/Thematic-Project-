@@ -9,8 +9,19 @@ const createAccount = (user, done) => {
     const salt = crypto.randomBytes(64);
     const hash = getHash(user.password, salt);
 
+<<<<<<< Updated upstream
     const sql = "INSERT INTO users (first_name, last_name, Email, Password, salt) VALUES (?,?,?,?,?)";
     let values = [user.first_name, user.last_name, user.email, hash, salt.toString('hex')];
+=======
+    const sql = "INSERT INTO users (first_name, last_name, email, password, salt) VALUES (?,?,?,?,?)";
+    let values = [
+        user.first_name,
+        user.last_name,
+        user.email.toLowerCase().trim(), // FIXED
+        hash,
+        salt.toString('hex')
+    ];
+>>>>>>> Stashed changes
 
     db.run(sql, values, function(err){
         if(err) return done(err);
@@ -22,7 +33,7 @@ const createAccount = (user, done) => {
 const testDuplicateEmail = (email, done) => {
     const sql = "SELECT * FROM Users WHERE Email = ?";
 
-    db.get(sql,[email],(err,row) => {
+    db.get(sql,[email.toLowerCase().trim()],(err,row) => { // FIXED
         if(err){
             return done(err);
         } if(!row){
@@ -35,7 +46,13 @@ const testDuplicateEmail = (email, done) => {
 
 
 const authenticateUser = (email, password, done) => {
+<<<<<<< Updated upstream
     const sql = "SELECT user_id, Password AS password, salt FROM Users WHERE Email = ?"
+=======
+    email = email.toLowerCase().trim(); // FIXED
+
+    const sql = "SELECT user_id, password, salt FROM users WHERE email = ?"
+>>>>>>> Stashed changes
 
     db.get(sql, [email], (err,row) =>{
         if(err) return done(err);
@@ -73,7 +90,6 @@ const setToken = (id,done) => {
     
     const sql = "UPDATE Users SET session_token = ? WHERE user_id = ?"
 
-
     db.run(sql,[token, id], (err) =>{
         return done(err,token)
     });
@@ -96,4 +112,3 @@ module.exports = {
     setToken,
     removeToken,
 }
-
