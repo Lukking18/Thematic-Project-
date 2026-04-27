@@ -1,7 +1,7 @@
 const reviewModel = require("../models/review.server.models");
 const MovieModel = require("../models/core.server.models")
 const AuthModel = require("../models/user.authentication.models")
-
+const Joi = require("joi");
 
 const review = (req, res) => {    
     const token = req.headers["x-authorization"];
@@ -23,7 +23,7 @@ const review = (req, res) => {
         if(err || id === null){
             return res.status(401).json({error_message: "Session token not found"})
         } 
-    })
+    
     
         const user_id = id;
     
@@ -44,11 +44,12 @@ const review = (req, res) => {
         return res.status(200).json({message: "Review published!"});
     })
 })
+    })
 }
 
 const get_review = (req, res) => {
     let get_reviewPromise = new Promise (function(resolve,reject){
-    reviewModel.get_all_reviews(req.params.review_id,(err,reviews) => {
+    reviewModel.get_all_reviews(req.params.movie_id,(err,reviews) => {
         if(err){
             reject("Internal Server error");
         } else {

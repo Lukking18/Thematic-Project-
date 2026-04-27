@@ -1,10 +1,10 @@
 const viewReview = (movie_id) =>{
-    return fetch(`http://localhost:3333/review/${movie_id}`
+    return fetch(`http://localhost:3333/review/${movie_id}`)
 
         
         .then((response) => {
-            if(response.staus === 200){
-                return response.json
+            if(response.status === 200){
+                return response.json();
             } else{
                 throw 'Internal Server Error'
             }
@@ -16,7 +16,7 @@ const viewReview = (movie_id) =>{
             console.log("Err", err)
             return Promise.reject(err)
         })
-    )
+    
 }
 
 const postReview = (movie_id, review) => {

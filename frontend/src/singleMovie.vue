@@ -117,8 +117,30 @@ export default {
       reviews: [],
       error: null,
 
+      review: "",
+      submitted: false
+
     }
   },
+  methods: { 
+    handleSubmit(e){ 
+      this.error = "" 
+      if((!this.review))
+      {
+        this.submitted = true; 
+        return; 
+      } 
+      reviewService.postReview(this.$route.params.id,this.review) 
+      .then(result =>{ 
+        console.log("Success!");
+      this.submitted = false; 
+      this.toggleModal();
+     }) 
+     .catch(error => { 
+      console.error("Failed", error) 
+    }); 
+  } 
+},
   async mounted() {
     const movieId = this.$route.params.id;
     this.loading = true;
@@ -126,18 +148,7 @@ export default {
       .then((movie) => {
         this.movie = movie
       })
-      .catch(error => this.error = error)
-
-    reviewService.viewReview(this.$route.params.id)
-      .then((res) => {
-        this.reviews = {
-          ...res
-    
-        }
-      })
-      .catch(error => this.error = error)
-
-      
+      .catch(error => this.error = error)     
     }
   }
 
