@@ -47,19 +47,17 @@
         </div>
         
         <div class="reviews-grid">
-          <div v-for="review in reviews" :key="review.id" class="review-item">
+          <div v-for="review in reviews" :key="review.review_id" class="review-item">
             <div class="review-header">
               <div class="reviewer-profile">
-                <div class="avatar">{{ review.author.charAt(0) }}</div>
+                <div class="avatar">{{ review.posted_by }}</div>
                 <div class="reviewer-info">
-                  <h4>{{ review.author }}</h4>
-                  <span class="review-date">{{ review.date }}</span>
+                  <h4>{{ review.posted_by }}</h4>
                 </div>
               </div>
-              <div class="review-rating-pill">⭐ {{ review.rating }}/10</div>
             </div>
             <div class="review-body">
-              <p>"{{" " + review.text + " "}}"</p>
+              <p>"{{" " + review.review_body + " "}}"</p>
             </div>
           </div>
         </div>
@@ -116,6 +114,7 @@ export default {
       movie_id: null,
       reviews: [],
       error: null,
+      CurrentUserID: parseInt(localStorage.getItem("user_id")),
 
       review: "",
       submitted: false
@@ -139,7 +138,20 @@ export default {
      .catch(error => { 
       console.error("Failed", error) 
     }); 
-  } 
+  }, 
+
+  viewReviews(){
+    reviewService.viewReview(this.$route.params.id)
+    .then(reviews =>{
+      this.reviews = reviews
+      this.loading = false
+    })
+    .catch(error => this.error = error)
+    .finally(() =>{
+      this.loading = false;
+    })
+
+  }
 },
   async mounted() {
     const movieId = this.$route.params.id;
@@ -148,7 +160,9 @@ export default {
       .then((movie) => {
         this.movie = movie
       })
-      .catch(error => this.error = error)     
+      .catch(error => this.error = error)  
+      
+      this.viewReviews();
     }
   }
 
