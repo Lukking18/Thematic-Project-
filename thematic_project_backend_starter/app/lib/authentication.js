@@ -13,6 +13,8 @@ function authentication(req,res,next){
         } if(!id){
             return res.status(401).json({error_message: "Session token not found"})
         }
+        
+        req.user_id = id;
         next()
     });
 }
