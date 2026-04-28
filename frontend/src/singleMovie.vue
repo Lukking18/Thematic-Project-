@@ -3,9 +3,6 @@
     <div v-if="movie" class="movie-card">
       
       <!-- Top banner section with blurred background -->
-    <div class="loading-state">
-      <!--<p v-if="loading">Loading cinematic experience...</p>-->
-    </div>
           
             <div class="movie-info-hero">
               <h2>{{ movie.title }} <span class="year">({{ movie.release_date }})</span></h2>
