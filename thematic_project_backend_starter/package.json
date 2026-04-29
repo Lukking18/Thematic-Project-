@@ -4,7 +4,8 @@
   "description": "the backend/API for the thematic project",
   "main": "server.js",
   "scripts": {
-    "dev": "nodemon server.js"
+    "dev": "nodemon server.js",
+    "test": "mocha tests/**/*.js --exit"
   },
   "keywords": [
     "moviedatabase",
