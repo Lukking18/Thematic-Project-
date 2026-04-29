@@ -210,6 +210,10 @@ export default {
   flex-shrink: 0;
   z-index: 2;
 }
+
+.movie-card {
+  color: #000;
+}
 .button{
       background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
   color: white;
